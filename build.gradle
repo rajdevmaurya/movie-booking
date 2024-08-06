@@ -1,0 +1,87 @@
+plugins {
+    id 'org.springframework.boot' version '3.2.0'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'java'
+     id "org.openapi.generator" version "6.6.0"
+}
+
+group = 'com.demo.moviebooking'
+version = '0.0.1-SNAPSHOT'
+archivesBaseName='movie-booking'
+sourceCompatibility = '17'
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/snapshot' }
+    maven { url 'https://repo.spring.io/milestone' }
+}
+
+
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'jakarta.servlet:jakarta.servlet-api'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.3'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
+
+    //OPEN API DOC
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.3'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
+    
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    runtimeOnly 'com.h2database:h2'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'com.h2database:h2:1.4.200'
+}
+ 
+def buildTime() {
+}
+springBoot {
+   buildInfo {
+        }
+         mainClass.set('com.demo.moviebooking.MovieBookingApplication')
+}
+
+ task buildApiCode(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask){
+    generatorName = "spring"
+    inputSpec = "$rootDir/src/main/resources/movieBooking.yaml".toString()
+    outputDir = "$buildDir/generated".toString() 
+    apiPackage = "com.demo.moviebooking.api"
+    modelPackage = "com.demo.moviebooking.api.model"
+    enablePostProcessFile = true
+    configOptions = [
+            configPackage : "com.demo.moviebooking.api.config",
+            id  :                     "$project.name-java-client",
+            dateLibrary   : "java8",
+            serializationLibrary : "jackson",
+            useBeanValidation : "false",
+            interfaceOnly     : "false",
+            serializableModel :"true",
+            useTags           : "true",
+            delegatePattern : "true",
+            generateApiTests : "true",
+            validateSpace    : "true",
+            useJakartaEe: "true"
+      ]
+} 
+ compileJava.dependsOn(buildApiCode)
+
+sourceSets {
+     main {
+           java{
+                  srcDir "$buildDir/generated/src/main/java"
+            }
+      }
+}
+tasks.named('test') {
+useJUnitPlatform()
+}

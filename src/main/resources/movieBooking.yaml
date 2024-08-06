@@ -1,0 +1,112 @@
+openapi: "3.0.3" # version of the specification 
+info: 
+  version: '1' 
+  title: Spring Boot Api 
+tags:
+- name : "THEATRES"
+  description: "API for Movies" 
+servers: 
+  - url: http://localhost:8080/v1 
+paths:
+  /api/theatres:
+    get:
+      tags:
+       - "THEATRES"
+      summary: Get all theatres
+      operationId: "findAllTheatres"
+      responses:
+        '200':
+          description: List of theatres
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Theatre'
+    post:
+      tags:
+       - "THEATRES"
+      summary: Create a new theatre
+      operationId: "createTheatre"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Theatre'
+      responses:
+        '201':
+          description: Theatre created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Theatre'
+  /api/shows/search:
+    get:
+      tags:
+       - "SHOW"
+      summary: Search for shows
+      parameters:
+        - name: movieTitle
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: city
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: List of shows
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Show'
+components:
+  schemas:
+    Theatre:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        city:
+          type: string
+        shows:
+          type: array
+          items:
+            $ref: '#/components/schemas/Show'     
+    Show:
+      type: object
+      properties:
+        id:
+          type: integer
+        theatre:
+          $ref: '#/components/schemas/Theatre'
+        movie:
+          $ref: '#/components/schemas/Movie'
+        showTime:
+          type: string
+          format: date-time
+    Movie:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        language:
+          type: string
+        genre:
+          type: string
