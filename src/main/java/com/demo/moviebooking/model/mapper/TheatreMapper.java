@@ -9,7 +9,7 @@ public class TheatreMapper extends BaseMapper<TheatreEntity, Theatre>{
     public TheatreEntity convertToEntity(Theatre dto, Object... args) {
         TheatreEntity entity = new TheatreEntity();
         if (dto != null) {
-            BeanUtils.copyProperties(dto, entity);
+            BeanUtils.copyProperties(dto, entity,"shows");
         }
         return entity;
     }
@@ -18,7 +18,7 @@ public class TheatreMapper extends BaseMapper<TheatreEntity, Theatre>{
     public Theatre convertToDto(TheatreEntity entity, Object... args) {
     	Theatre dto = new Theatre();
         if (entity != null) {
-            BeanUtils.copyProperties(entity, dto);
+            BeanUtils.copyProperties(entity, dto,"shows");
         }
         return dto;
     }

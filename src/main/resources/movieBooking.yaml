@@ -83,10 +83,6 @@ components:
           type: string
         city:
           type: string
-        shows:
-          type: array
-          items:
-            $ref: '#/components/schemas/Show'     
     Show:
       type: object
       properties:

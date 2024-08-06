@@ -1,6 +1,7 @@
 package com.demo.moviebooking.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.CascadeType;
@@ -13,6 +14,7 @@ import jakarta.persistence.OneToMany;
 
 import java.util.List;
 
+@Builder
 @Entity
 @Data
 @AllArgsConstructor
@@ -26,4 +28,36 @@ public class TheatreEntity {
 
     @OneToMany(mappedBy = "theatre", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ShowEntity> shows;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public List<ShowEntity> getShows() {
+		return shows;
+	}
+
+	public void setShows(List<ShowEntity> shows) {
+		this.shows = shows;
+	}
 }

@@ -25,7 +25,9 @@ public class TheatreService {
 	}
 
 	public Theatre saveTheatre(Theatre theatreDto) {
-		TheatreEntity entity = theatreMapper.convertToEntity(theatreDto);
+		TheatreEntity entity = new TheatreEntity();
+		entity.setCity(theatreDto.getName());
+		entity.setName(theatreDto.getCity());
 		TheatreEntity theatreEntity = theatreRepository.save(entity);
 		return theatreMapper.convertToDto(theatreEntity);
 	}
