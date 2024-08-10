@@ -3,8 +3,10 @@ info:
   version: '1' 
   title: Spring Boot Api 
 tags:
-- name : "THEATRES"
+- name: "THEATRES"
   description: "API for Movies" 
+- name: "SHOW"
+  description: "API for Shows" 
 servers: 
   - url: http://localhost:8080/v1 
 paths:
@@ -46,6 +48,7 @@ paths:
       tags:
        - "SHOW"
       summary: Search for shows
+      operationId: "searchShows"
       parameters:
         - name: movieTitle
           in: query
@@ -59,7 +62,7 @@ paths:
             type: string
         - name: date
           in: query
-          required: true
+          required: false
           schema:
             type: string
             format: date-time
@@ -72,6 +75,25 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Show'
+  /api/shows:
+    post:
+      tags:
+        - "SHOW"
+      summary: Add a new show
+      operationId: "addShow"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Show'
+      responses:
+        '201':
+          description: Show created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Show'
 components:
   schemas:
     Theatre:
